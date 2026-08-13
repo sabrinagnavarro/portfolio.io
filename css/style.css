@@ -1,0 +1,572 @@
+/* =========================================================
+   PR PORTFOLIO TEMPLATE — STYLE SHEET
+   Edit the tokens in :root to reskin the whole site.
+   ========================================================= */
+
+:root {
+  /* ---- Color tokens ---- */
+  --paper:      #F6F3EC;  /* page background */
+  --paper-dim:  #EFEAdd;  /* card background */
+  --ink:        #1B2430;  /* primary text / masthead */
+  --ink-soft:   #454C58;  /* secondary text */
+  --accent:     #C5551C;  /* accent — dateline, links, subheadings, hover states */
+  --accent-dark:#A2440F;  /* darker accent for hover on already-orange text */
+  --brass:      #A9813F;  /* secondary accent — rules, bylines */
+  --line:       #D9D2C0;  /* hairline rule color */
+  --line-dark:  #C6BDA6;
+
+  /* ---- Type tokens ---- */
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body:    "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "IBM Plex Mono", "Courier New", monospace;
+
+  --nav-height: 68px;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+a:hover, a:focus-visible { color: var(--accent-dark); text-decoration: underline; }
+
+img { max-width: 100%; display: block; }
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   MASTHEAD
+   ========================================================= */
+.masthead {
+  padding: 34px 24px 18px;
+  text-align: center;
+  border-bottom: 3px double var(--ink);
+}
+.masthead__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+.masthead__name {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: clamp(2.1rem, 6vw, 3.4rem);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.masthead__tagline {
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--ink-soft);
+  margin: 8px 0 0;
+  font-size: 1.02rem;
+}
+
+/* =========================================================
+   NAVIGATION — with dropdown for subpages
+   ========================================================= */
+.site-nav {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line-dark);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.site-nav__inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--nav-height);
+  padding: 0 20px;
+}
+.nav-list {
+  list-style: none;
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+.nav-item { position: relative; }
+
+.nav-link,
+.nav-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.nav-link:hover,
+.nav-toggle:hover,
+.nav-item.is-open .nav-toggle {
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-link[aria-current="page"] {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+}
+.nav-toggle svg {
+  width: 10px; height: 10px;
+  transition: transform 0.15s ease;
+}
+.nav-item.is-open .nav-toggle svg { transform: rotate(180deg); }
+
+/* Dropdown panel (desktop) */
+.nav-dropdown {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  min-width: 220px;
+  background: var(--paper);
+  border: 1px solid var(--line-dark);
+  box-shadow: 0 10px 24px rgba(27,36,48,0.12);
+  display: none;
+}
+.nav-item.is-open .nav-dropdown { display: block; }
+.nav-dropdown a {
+  display: block;
+  padding: 9px 10px;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 2px;
+}
+.nav-dropdown a:hover,
+.nav-dropdown a:focus-visible { background: var(--paper-dim); color: var(--accent); }
+.nav-dropdown li + li { border-top: 1px solid var(--line); }
+
+/* Group labels inside a dropdown (non-clickable section headers, e.g.
+   "Digital Humanities" grouping several links under Relevant Coursework) */
+.nav-dropdown__group-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brass);
+  padding: 10px 10px 4px;
+}
+.nav-dropdown li.nav-dropdown__group-label + li { border-top: none; }
+.nav-dropdown a.nav-dropdown__sub { padding-left: 22px; font-size: 14px; }
+
+/* Mobile hamburger */
+.nav-hamburger {
+  display: none;
+  border: 1px solid var(--line-dark);
+  background: var(--paper);
+  padding: 8px 10px;
+  cursor: pointer;
+  margin-left: auto;
+}
+.nav-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--ink);
+  margin: 4px 0;
+}
+
+@media (max-width: 720px) {
+  .site-nav__inner { justify-content: space-between; }
+  .nav-hamburger { display: inline-block; }
+  .nav-list {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line-dark);
+    padding: 6px 0 14px;
+  }
+  .site-nav.is-open .nav-list { display: flex; }
+  .nav-item { width: 100%; }
+  .nav-link, .nav-toggle { width: 100%; padding: 12px 20px; justify-content: space-between; }
+  .nav-dropdown {
+    position: static;
+    display: none;
+    border: none;
+    box-shadow: none;
+    background: var(--paper-dim);
+    width: 100%;
+    padding: 0;
+  }
+  .nav-item.is-open .nav-dropdown { display: block; }
+  .nav-dropdown a { padding: 10px 32px; }
+}
+
+/* =========================================================
+   LAYOUT / CONTAINERS
+   ========================================================= */
+main { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+.container-wide { max-width: 1040px; margin: 0 auto; padding: 48px 24px 80px; }
+
+section + section { margin-top: 56px; padding-top: 56px; border-top: 1px solid var(--line); }
+
+/* Profile photo + intro, homepage only */
+.intro {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 8px;
+}
+.intro__text { flex: 1 1 380px; }
+.profile-photo {
+  flex: 0 0 auto;
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--paper-dim);
+  box-shadow: 0 0 0 1px var(--line-dark);
+  margin: 0 auto;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+}
+h2 { font-size: 1.7rem; margin: 0 0 8px; }
+h3 { font-size: 1.25rem; margin: 24px 0 8px; color: var(--accent); }
+
+p { color: var(--ink-soft); }
+p.lede { font-size: 1.12rem; color: var(--ink); }
+
+/* Dateline — press-release convention, used as a signature detail */
+.dateline {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.byline {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 20px;
+}
+.sign-off {
+  text-align: center;
+  font-family: var(--font-mono);
+  letter-spacing: 0.3em;
+  color: var(--line-dark);
+  margin-top: 40px;
+}
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--line-dark);
+  color: var(--ink-soft);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+/* =========================================================
+   MEDIA EMBEDS
+   ========================================================= */
+.media-block { margin: 22px 0 30px; }
+.media-block__caption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+
+/* Responsive YouTube embed */
+.video-embed {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 */
+  background: var(--ink);
+  border: 1px solid var(--line-dark);
+}
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* PDF embed: iframe on capable browsers, always-visible fallback link
+   because many mobile browsers cannot render PDFs inside an iframe */
+.pdf-embed {
+  border: 1px solid var(--line-dark);
+  background: var(--paper-dim);
+}
+.pdf-embed iframe {
+  width: 100%;
+  height: 640px;
+  border: 0;
+  display: block;
+}
+.pdf-embed__fallback {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--line-dark);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+@media (max-width: 640px) {
+  .pdf-embed iframe { height: 420px; }
+}
+
+/* =========================================================
+   PORTFOLIO INDEX — card grid
+   ========================================================= */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+  margin-top: 32px;
+}
+.card {
+  background: var(--paper-dim);
+  border: 1px solid var(--line-dark);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+.card h3 { margin-top: 0; }
+.card p { flex-grow: 1; }
+.card .tag-row { margin-bottom: 14px; }
+.card__link {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* =========================================================
+   EXPERIENCE — resume-style dot-leader row
+   ========================================================= */
+.exp-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 18px 0 4px;
+}
+.exp-row__title { font-weight: 600; white-space: nowrap; }
+.exp-row__leader {
+  flex: 1;
+  border-bottom: 2px dotted var(--line-dark);
+  height: 0;
+  margin-bottom: 5px;
+}
+.exp-row__dates {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.exp-org {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 28px 0 0;
+}
+.exp-org:first-of-type { margin-top: 0; }
+
+/* =========================================================
+   EMBEDDED DOCS — Google Slides / Docs iframe, same shell as PDFs
+   ========================================================= */
+.doc-embed {
+  border: 1px solid var(--line-dark);
+  background: var(--paper-dim);
+  margin: 16px 0;
+}
+.doc-embed iframe {
+  width: 100%;
+  height: 480px;
+  border: 0;
+  display: block;
+}
+.doc-embed__fallback {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--line-dark);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+.doc-embed__fallback svg { flex-shrink: 0; }
+
+/* File chip — for "add your own file here" placeholders */
+.file-note {
+  border: 1px dashed var(--line-dark);
+  background: var(--paper-dim);
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin: 16px 0;
+}
+
+/* Image grid for handout / slide screenshots */
+.img-stack img {
+  border: 1px solid var(--line-dark);
+  margin: 14px 0;
+}
+.img-stack figcaption {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin: -6px 0 14px;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.site-footer {
+  border-top: 3px double var(--ink);
+  padding: 32px 24px 40px;
+  text-align: center;
+}
+.site-footer__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin: 0 0 16px;
+}
+.footer-connect {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 28px;
+  margin: 0;
+  padding: 0;
+}
+.footer-connect a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: 14.5px;
+}
+.footer-connect a:hover,
+.footer-connect a:focus-visible {
+  color: var(--accent);
+  text-decoration: none;
+}
+.footer-connect svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+/* =========================================================
+   QUILLS AND NIBS — clickable essay accordion
+   ========================================================= */
+.essay-list {
+  list-style: none;
+  margin: 32px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.essay-item {
+  border-bottom: 1px solid var(--line);
+}
+.essay-item__toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 20px 4px;
+  color: var(--ink);
+}
+.essay-item__toggle:hover,
+.essay-item__toggle:focus-visible {
+  color: var(--accent);
+}
+.essay-item__heading {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: inherit;
+  margin: 0 0 4px;
+}
+.essay-item__dek {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+.essay-item__icon {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  margin-top: 4px;
+  transition: transform 0.2s ease;
+  color: var(--accent);
+}
+.essay-item.is-open .essay-item__icon { transform: rotate(180deg); }
+.essay-item__panel {
+  display: none;
+  padding: 0 4px 26px;
+}
+.essay-item.is-open .essay-item__panel { display: block; }
+.essay-item__panel p:first-child { margin-top: 0; }
