@@ -4,6 +4,21 @@
 // click-outside-to-close, and Escape-to-close.
 // No build step needed — plain JS, works as-is on GitHub Pages.
 // =========================================================
+
+// =========================================================
+// METRICS SWITCH
+// "disabled" — metric strips stay hidden site-wide (default).
+// "enabled"  — they appear next to every element that has them.
+// The markup lives in the HTML either way; this only toggles it.
+// =========================================================
+var METRICS = "disabled";
+
+// Applied to <html> immediately (not on DOMContentLoaded) so the metrics
+// never flash on screen before the switch is read.
+if (METRICS === "enabled") {
+  document.documentElement.classList.add("metrics-enabled");
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   var siteNav = document.querySelector(".site-nav");
   var hamburger = document.querySelector(".nav-hamburger");
@@ -212,4 +227,163 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("resize", sync);
     sync();
   });
+
+  // Count-up metrics. Every .metric__value / .metric__delta already carries its
+  // final number in the HTML (so it reads fine with JS off, or for a crawler).
+  // Here we parse that text, rewind it to zero, and run it back up the first
+  // time the metric scrolls into view.
+  //
+  // Formats handled, all inferred from the existing markup:
+  //   1,240   grouped integer      12.4k  decimal + unit suffix
+  //   7.9%    decimal + percent    +38%   signed prefix
+  //   3:10    m:ss duration (counted in seconds, re-formatted on the way up)
+  // Per-element overrides: data-count-from, data-count-duration (ms),
+  // data-count="off" to leave a value alone.
+  var countTargets = document.querySelectorAll(".metric__value, .metric__delta");
+
+  if (countTargets.length && "IntersectionObserver" in window) {
+    var COUNT_DURATION = 1200;
+
+    // Splits "+38%" into prefix "+", number "38", suffix "%".
+    var NUMBER_RE = /^([^0-9]*)([0-9][0-9,]*(?:\.[0-9]+)?)([^0-9]*)$/;
+    var TIME_RE = /^(\d+):([0-5]\d)$/;
+
+    function group(intPart) {
+      return intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function makeNumberFormatter(prefix, suffix, decimals, grouped) {
+      return function (value) {
+        var text = value.toFixed(decimals);
+        if (grouped) {
+          var parts = text.split(".");
+          parts[0] = group(parts[0]);
+          text = parts.join(".");
+        }
+        return prefix + text + suffix;
+      };
+    }
+
+    function formatTime(seconds) {
+      var whole = Math.round(seconds);
+      var secs = whole % 60;
+      return Math.floor(whole / 60) + ":" + (secs < 10 ? "0" : "") + secs;
+    }
+
+    function parseMetric(text) {
+      var raw = text.trim();
+
+      var time = raw.match(TIME_RE);
+      if (time) {
+        return { to: Number(time[1]) * 60 + Number(time[2]), format: formatTime };
+      }
+
+      var parts = raw.match(NUMBER_RE);
+      if (!parts) return null;
+
+      var digits = parts[2];
+      var dot = digits.indexOf(".");
+      return {
+        to: Number(digits.replace(/,/g, "")),
+        format: makeNumberFormatter(
+          parts[1],
+          parts[3],
+          dot === -1 ? 0 : digits.length - dot - 1,
+          digits.indexOf(",") !== -1
+        )
+      };
+    }
+
+    // easeOutCubic — quick off the line, settles gently on the final number.
+    function ease(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    var reduceMotion = window.matchMedia
+      ? window.matchMedia("(prefers-reduced-motion: reduce)")
+      : null;
+
+    var counters = [];
+
+    countTargets.forEach(function (el) {
+      if (el.getAttribute("data-count") === "off") return;
+
+      var parsed = parseMetric(el.textContent);
+      if (!parsed) return;
+
+      var from = Number(el.getAttribute("data-count-from"));
+      if (!isFinite(from)) from = 0;
+
+      var duration = Number(el.getAttribute("data-count-duration"));
+      if (!(duration > 0)) duration = COUNT_DURATION;
+
+      counters.push({
+        el: el,
+        from: from,
+        to: parsed.to,
+        duration: duration,
+        format: parsed.format,
+        done: false
+      });
+    });
+
+    if (counters.length) {
+      var run = function (counter) {
+        if (counter.done) return;
+        counter.done = true;
+
+        if (reduceMotion && reduceMotion.matches) {
+          counter.el.textContent = counter.format(counter.to);
+          return;
+        }
+
+        var start = null;
+        var span = counter.to - counter.from;
+
+        var step = function (now) {
+          if (start === null) start = now;
+          var progress = Math.min((now - start) / counter.duration, 1);
+          counter.el.textContent = counter.format(counter.from + span * ease(progress));
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            // Back to natural sizing now that the widest string is in place,
+            // so a later resize or zoom isn't held to a stale pixel width.
+            counter.el.style.minWidth = "";
+          }
+        };
+
+        requestAnimationFrame(step);
+      };
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            observer.unobserve(entry.target);
+            var counter = entry.target.__counter;
+            if (counter) run(counter);
+          });
+        },
+        { threshold: 0.35 }
+      );
+
+      counters.forEach(function (counter) {
+        // Pin the box to the width of the *final* string before rewinding, so a
+        // narrow "0" doesn't shrink the column and reflow the row mid-count.
+        var width = counter.el.getBoundingClientRect().width;
+
+        // Zero width means the metric isn't being rendered at all — the most
+        // common case being the METRICS switch left off, which hides every
+        // strip. An unrendered element never intersects, so rewinding it to
+        // zero would strand it there; leave the authored number alone.
+        if (!width) return;
+
+        counter.el.style.minWidth = width + "px";
+        counter.el.textContent = counter.format(counter.from);
+        counter.el.__counter = counter;
+        observer.observe(counter.el);
+      });
+    }
+  }
 });

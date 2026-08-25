@@ -14,7 +14,7 @@
 
 <header class="masthead">
   <p class="masthead__eyebrow">Media Studies &middot; PR &amp; Social Strategy</p>
-  <h1 class="masthead__name">Sabrina Navarro</h1>
+  <h1 class="masthead__name"><a class="masthead__home" href="../index.html">Sabrina Navarro</a></h1>
   <p class="masthead__tagline">Mercer University Media Studies Graduate</p>
 </header>
 
@@ -57,6 +57,9 @@
           <li><a class="nav-dropdown__sub" href="../projects/films-video-assignments/short-films.html">Short Films</a></li>
         </ul>
       </li>
+      <li class="nav-item">
+        <a class="nav-link nav-link--external" href="http://www.linkedin.com/in/sabrinagnavarro" target="_blank" rel="noopener">Connect on LinkedIn!</a>
+      </li>
     </ul>
     <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -83,6 +86,23 @@
           Meet Sabrina Navarro: Digital Marketing
         </a>
         <p>My passion for storytelling and communication sparked my interest in digital marketing, where I can use creative strategies to connect with diverse audiences and build communities.</p>
+        <!-- Placeholder figures — replace with real numbers.
+             Hidden unless METRICS is "enabled" in js/main.js. -->
+        <ul class="metrics">
+          <li class="metric">
+            <span class="metric__value">1,240</span>
+            <span class="metric__label">Reads</span>
+          </li>
+          <li class="metric">
+            <span class="metric__value">3:10</span>
+            <span class="metric__label">Avg. time</span>
+          </li>
+          <li class="metric">
+            <span class="metric__value">86</span>
+            <span class="metric__label">Shares</span>
+            <span class="metric__delta metric__delta--up">+38%</span>
+          </li>
+        </ul>
       </li>
       <li>
         <a href="https://www.sarahsocialstrategy.com/post/beyond-feed-building-stronger-social-media-strategy" target="_blank" rel="noopener">
@@ -102,48 +122,90 @@
   <section>
     <h3>Social Carousel</h3>
     <p>&ldquo;5 Community Management Tips That Actually Work&rdquo; &mdash; an Instagram carousel I wrote and designed. Swipe or use the arrows to move through it.</p>
+    <!-- The wrapper puts the metrics rail beside the carousel when metrics are
+         on, and collapses to a plain block when they're off. -->
+    <div class="with-metrics">
     <div class="carousel" data-carousel>
       <button class="carousel__nav carousel__nav--prev" type="button" aria-label="Previous slide" data-carousel-prev>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4 7 12l8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <ul class="carousel__track" data-carousel-track tabindex="0" aria-label="Social carousel slides">
-        <li class="carousel__slide"><img src="../assets/img/carousel/slide-1.jpg" alt="Carousel slide 1: 5 Community Management Tips That Actually Work" width="960" height="1200"></li>
-        <li class="carousel__slide"><img src="../assets/img/carousel/slide-2.jpg" alt="Carousel slide 2" width="960" height="1200" loading="lazy"></li>
-        <li class="carousel__slide"><img src="../assets/img/carousel/slide-3.jpg" alt="Carousel slide 3" width="960" height="1200" loading="lazy"></li>
-        <li class="carousel__slide"><img src="../assets/img/carousel/slide-4.jpg" alt="Carousel slide 4" width="960" height="1200" loading="lazy"></li>
-        <li class="carousel__slide"><img src="../assets/img/carousel/slide-5.jpg" alt="Carousel slide 5" width="960" height="1200" loading="lazy"></li>
-        <li class="carousel__slide"><img src="../assets/img/carousel/slide-6.jpg" alt="Carousel slide 6" width="960" height="1200" loading="lazy"></li>
-        <li class="carousel__slide"><img src="../assets/img/carousel/slide-7.jpg" alt="Carousel slide 7" width="960" height="1200" loading="lazy"></li>
+        <li class="carousel__slide"><img src="../assets/sarahs-social-strategy/img/carousel/slide-1.jpg" alt="Carousel slide 1: 5 Community Management Tips That Actually Work" width="960" height="1200"></li>
+        <li class="carousel__slide"><img src="../assets/sarahs-social-strategy/img/carousel/slide-2.jpg" alt="Carousel slide 2" width="960" height="1200" loading="lazy"></li>
+        <li class="carousel__slide"><img src="../assets/sarahs-social-strategy/img/carousel/slide-3.jpg" alt="Carousel slide 3" width="960" height="1200" loading="lazy"></li>
+        <li class="carousel__slide"><img src="../assets/sarahs-social-strategy/img/carousel/slide-4.jpg" alt="Carousel slide 4" width="960" height="1200" loading="lazy"></li>
+        <li class="carousel__slide"><img src="../assets/sarahs-social-strategy/img/carousel/slide-5.jpg" alt="Carousel slide 5" width="960" height="1200" loading="lazy"></li>
+        <li class="carousel__slide"><img src="../assets/sarahs-social-strategy/img/carousel/slide-6.jpg" alt="Carousel slide 6" width="960" height="1200" loading="lazy"></li>
+        <li class="carousel__slide"><img src="../assets/sarahs-social-strategy/img/carousel/slide-7.jpg" alt="Carousel slide 7" width="960" height="1200" loading="lazy"></li>
       </ul>
       <button class="carousel__nav carousel__nav--next" type="button" aria-label="Next slide" data-carousel-next>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="carousel__dots" data-carousel-dots aria-hidden="true"></div>
     </div>
+    <!-- Placeholder figures — replace with real numbers. -->
+    <ul class="metrics metrics--rail">
+      <li class="metric">
+        <span class="metric__value">12.4k</span>
+        <span class="metric__label">Impressions</span>
+        <span class="metric__delta metric__delta--up">+38%</span>
+      </li>
+      <li class="metric">
+        <span class="metric__value">7.9%</span>
+        <span class="metric__label">Engagement rate</span>
+      </li>
+      <li class="metric">
+        <span class="metric__value">312</span>
+        <span class="metric__label">Saves</span>
+        <span class="metric__source">Instagram Insights</span>
+      </li>
+    </ul>
+    </div>
   </section>
 
 
   <section>
-    <h3>Flyer</h3>
-    <p>A marketing campaigns flyer designed for the agency.</p>
-    <figure class="flyer">
-      <a href="../assets/img/flyer/marketing-campaigns.jpg" data-lightbox>
-        <img src="../assets/img/flyer/marketing-campaigns.jpg" alt="Sarah's Social Strategy marketing campaigns flyer" width="1875" height="984" loading="lazy">
-      </a>
-    </figure>
+    <h3>Flyers</h3>
+    <p>Print and social flyers designed for the agency. Select any flyer to view it full size.</p>
+    <div class="flyer-grid">
+      <figure class="flyer">
+        <a href="../assets/sarahs-social-strategy/img/flyer/SSS_Social_Media_Strategy_Flyer_.png" data-lightbox>
+          <img src="../assets/sarahs-social-strategy/img/flyer/SSS_Social_Media_Strategy_Flyer_.png" alt="Sarah&rsquo;s Social Strategy social media strategy flyer" width="2000" height="1414" loading="lazy">
+        </a>
+        <figcaption>Social Media Strategy</figcaption>
+      </figure>
+      <figure class="flyer">
+        <a href="../assets/sarahs-social-strategy/img/flyer/SSS_Marketing_Campaigns_Flyer_1.png" data-lightbox>
+          <img src="../assets/sarahs-social-strategy/img/flyer/SSS_Marketing_Campaigns_Flyer_1.png" alt="Sarah&rsquo;s Social Strategy marketing campaigns flyer, first design" width="1200" height="630" loading="lazy">
+        </a>
+        <figcaption>Marketing Campaigns &mdash; I</figcaption>
+      </figure>
+      <figure class="flyer">
+        <a href="../assets/sarahs-social-strategy/img/flyer/SSS_Marketing_Campaigns_Flyer_2.png" data-lightbox>
+          <img src="../assets/sarahs-social-strategy/img/flyer/SSS_Marketing_Campaigns_Flyer_2.png" alt="Sarah&rsquo;s Social Strategy marketing campaigns flyer, second design" width="1414" height="2000" loading="lazy">
+        </a>
+        <figcaption>Marketing Campaigns &mdash; II</figcaption>
+      </figure>
+    </div>
+    <!-- One strip for the flyer set. For per-flyer numbers instead, wrap a
+         single <figure class="flyer"> in <div class="with-metrics"> with a
+         .metrics--rail beside it. Placeholder figures — replace with real numbers. -->
+    <ul class="metrics">
+      <li class="metric">
+        <span class="metric__value">2.1k</span>
+        <span class="metric__label">Reach</span>
+      </li>
+      <li class="metric">
+        <span class="metric__value">148</span>
+        <span class="metric__label">Link clicks</span>
+      </li>
+      <li class="metric">
+        <span class="metric__value">19</span>
+        <span class="metric__label">Inquiries</span>
+        <span class="metric__delta metric__delta--up">+24%</span>
+      </li>
+    </ul>
   </section>
-
-
-<section>
-    <h3>Marketing Campaigns</h3>
-    <p>A marketing campaigns flyer designed for the agency.</p>
-    <figure class="flyer">
-      <a href="../assets/img/flyer/marketing-campaigns.jpg" data-lightbox>
-        <img src="../assets/img/flyer/marketing-campaigns.jpg" alt="Sarah's Social Strategy marketing campaigns flyer" width="1875" height="984" loading="lazy">
-      </a>
-    </figure>
-  </section>
-
 
 </main>
 
